@@ -22,8 +22,15 @@ if (isset($_GET['ajax_update']))
     <p>Unix time: <span id="time">NA</span></p>
 </section>
 
+<section class="control">
+    <button onClick="startTimer()">Start</button>
+    <button onClick="stopTimer()">Stop</button>
+</section>
 
 <script type="text/javascript">
+
+var currentTimer = 0;
+
 
 function update()
 {
@@ -37,16 +44,26 @@ function update()
       document.querySelector('#time').innerHTML = response.data.time;
 
       //call update after 100ms (set to whatever suits your needs)
-      setTimeout(function(){ update(); }, 100);
+      currentTimer = setTimeout(function(){ update(); }, 100);
 
     })
     .catch(function (error) {
       console.log(error);
 
        //Try again  1000ms
-       setTimeout(function(){ update(); }, 1000);
+       currentTimer = setTimeout(function(){ update(); }, 1000);
 
     });
+}
+
+
+function startTimer() {
+    //Let's cheat and just call update
+    update();
+}
+
+function stopTimer() {
+    clearTimeout(currentTimer);
 }
 
 
